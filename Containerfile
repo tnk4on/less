@@ -1,5 +1,7 @@
 # Containerfile for tnk4on/less
-FROM registry.access.redhat.com/ubi8/ubi
+
+# Preparation Build
+FROM registry.access.redhat.com/ubi8/ubi as prep
 LABEL maintainer="Shion Tanaka / Twitter(@tnk4on)"
 
 ENV VERSION=594
@@ -14,7 +16,11 @@ RUN dnf install --disableplugin=subscription-manager --nodocs -y make gcc autoco
 && cd less-${VERSION} \
 && ./configure --prefix=$HOME/usr \
 && make \
-&& make install
+&& make install 
+
+# Building Image
+FROM registry.access.redhat.com/ubi8/ubi-minimal
+COPY --from=prep /root/usr/ /root/usr
 
 WORKDIR /tmp
 ENTRYPOINT ["/root/usr/bin/less"]
