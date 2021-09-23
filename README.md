@@ -15,8 +15,9 @@ $ podman build -t tnk4on/less .
 ## Run
 
 ```
-$ podman run --rm less /root/usr/bin/less --version | head -n 1
+$ podman run --rm tnk4on/less --version | head -n 1
 less 594x (POSIX regular expressions)
+$ podman run --rm -it -v .:/tmp tnk4on/less <FILENAME>
 ```
 
 ## Copy the pre-built binary from inside the container
@@ -27,4 +28,12 @@ $ podman cp less:/root/usr/bin/less .
 $ podman rm less
 $ ./less --version |head -n 1
 less 594x (POSIX regular expressions)
+```
+Note: Built with UBI by default, so RHEL or CentOS Stream may work.
+
+## Usage: less header option
+
+```
+less --header 1
+less -h 1
 ```
