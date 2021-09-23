@@ -27,7 +27,7 @@ $ podman run --rm -it -v .:/tmp tnk4on/less <FILENAME>
 ## Copy the pre-built binary from inside the container
 
 ```
-$ podman create --name less less
+$ podman create --name less tnk4on/less
 $ podman cp less:/root/usr/bin/less .
 $ podman rm less
 $ ./less --version |head -n 1
