@@ -19,7 +19,7 @@ RUN dnf install --disableplugin=subscription-manager --nodocs -y make gcc autoco
 && make install 
 
 # Building Image
-FROM registry.access.redhat.com/ubi8/ubi-minimal
+FROM registry.access.redhat.com/ubi8/ubi-micro
 COPY --from=prep /root/usr/ /root/usr
 
 WORKDIR /tmp
