@@ -2,6 +2,10 @@
 
 This container image is used to build "less" from the source and run it as a container.
 
+- Original source code: https://github.com/gwsw/less.git
+
+- This release is based on the version listed in the [version.c](https://github.com/gwsw/less/blob/master/version.c)  file. 
+
 ## Build
 
 ```
