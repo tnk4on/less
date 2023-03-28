@@ -1,12 +1,13 @@
 # Containerfile for tnk4on/less
 
 # Preparation Build
-FROM registry.access.redhat.com/ubi8/ubi as prep
+FROM registry.access.redhat.com/ubi9/ubi as prep
 LABEL maintainer="Shion Tanaka / Twitter(@tnk4on)"
 
-ENV VERSION=594
+ENV VERSION=631
+#WORKDIR /tmp
 
-RUN dnf install --disableplugin=subscription-manager --nodocs -y make gcc autoconf automake ncurses-devel git \
+RUN dnf install --disableplugin=subscription-manager --nodocs -y make gcc autoconf automake ncurses-devel diffutils git \
 && git clone https://github.com/gwsw/less.git \
 && cd less \
 && autoreconf -i \
@@ -19,7 +20,7 @@ RUN dnf install --disableplugin=subscription-manager --nodocs -y make gcc autoco
 && make install 
 
 # Building Image
-FROM registry.access.redhat.com/ubi8/ubi-micro
+FROM registry.access.redhat.com/ubi9/ubi-micro
 COPY --from=prep /root/usr/ /root/usr
 
 WORKDIR /tmp
