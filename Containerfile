@@ -2,26 +2,19 @@
 
 # Preparation Build
 FROM registry.access.redhat.com/ubi9/ubi as prep
-LABEL maintainer="Shion Tanaka / Twitter(@tnk4on)"
 
-ENV VERSION=631
-#WORKDIR /tmp
-
-RUN dnf install --disableplugin=subscription-manager --nodocs -y make gcc autoconf automake ncurses-devel diffutils git \
-&& git clone https://github.com/gwsw/less.git \
-&& cd less \
-&& autoreconf -i \
-&& make -f Makefile.aut dist || true \
-&& cp release/less-${VERSION}/less-${VERSION}.tar.gz . \
-&& tar xf less-${VERSION}.tar.gz \
-&& cd less-${VERSION} \
+RUN dnf install --disableplugin=subscription-manager --nodocs -y make gcc autoconf ncurses-devel diffutils git
+RUN git clone https://github.com/gwsw/less.git
+RUN cd less \
+&& make -f Makefile.aut distfiles || true \
 && ./configure --prefix=$HOME/usr \
 && make \
 && make install 
 
 # Building Image
 FROM registry.access.redhat.com/ubi9/ubi-micro
-COPY --from=prep /root/usr/ /root/usr
+LABEL maintainer="Shion Tanaka / Twitter(@tnk4on)"
 
-WORKDIR /tmp
-ENTRYPOINT ["/root/usr/bin/less"]
+COPY --from=prep /root/usr/bin/less /usr/bin/less
+
+ENTRYPOINT ["/usr/bin/less"]
